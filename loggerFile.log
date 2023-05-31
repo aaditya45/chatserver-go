@@ -1,0 +1,58 @@
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /ws                       --> main.main.func1 (3 handlers)
+[GIN-debug] POST   /register                 --> main.main.func2 (3 handlers)
+[GIN-debug] POST   /login                    --> main.main.func3 (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8082
+127.0.0.1 - [28 May 23 15:00 IST] POST /register 500 1.5998ms 
+127.0.0.1 - [28 May 23 15:01 IST] POST /register 500 5.2053ms 
+127.0.0.1 - [28 May 23 15:01 IST] POST /register 500 11.5347ms 
+127.0.0.1 - [28 May 23 15:02 IST] POST /register 500 12.1343ms 
+127.0.0.1 - [28 May 23 15:03 IST] POST /register 500 10.1991ms 
+127.0.0.1 - [28 May 23 15:03 IST] POST /register 500 1.1175ms 
+127.0.0.1 - [28 May 23 15:03 IST] POST /register 500 6.1798ms 
+127.0.0.1 - [28 May 23 15:04 IST] POST /register 500 5.5056ms 
+127.0.0.1 - [28 May 23 15:04 IST] POST /register 500 11.5881ms 
+127.0.0.1 - [28 May 23 15:04 IST] POST /register 500 11.6968ms 
+127.0.0.1 - [28 May 23 15:04 IST] POST /login 200 17.6034ms 
+127.0.0.1 - [28 May 23 15:04 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:05 IST] POST /login 200 10.9429ms 
+127.0.0.1 - [28 May 23 15:05 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:06 IST] POST /login 200 11.1757ms 
+127.0.0.1 - [28 May 23 15:06 IST] GET /ws 200 2.1246ms 
+127.0.0.1 - [28 May 23 15:06 IST] POST /login 200 13.1028ms 
+127.0.0.1 - [28 May 23 15:06 IST] GET /ws 200 2.1974ms 
+127.0.0.1 - [28 May 23 15:06 IST] POST /login 200 9.0117ms 
+127.0.0.1 - [28 May 23 15:06 IST] GET /ws 200 568.1µs 
+127.0.0.1 - [28 May 23 15:08 IST] POST /login 200 6.0828ms 
+127.0.0.1 - [28 May 23 15:08 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:08 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:09 IST] POST /login 200 11.2085ms 
+127.0.0.1 - [28 May 23 15:09 IST] POST /login 200 21.2412ms 
+127.0.0.1 - [28 May 23 15:09 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:09 IST] POST /login 200 20.1797ms 
+127.0.0.1 - [28 May 23 15:09 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:11 IST] POST /login 200 8.8026ms 
+127.0.0.1 - [28 May 23 15:11 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:11 IST] POST /login 200 19.3745ms 
+127.0.0.1 - [28 May 23 15:11 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:12 IST] POST /login 200 9.9195ms 
+127.0.0.1 - [28 May 23 15:12 IST] GET /ws 200 5.0311ms 
+127.0.0.1 - [28 May 23 15:12 IST] POST /login 200 19.9379ms 
+127.0.0.1 - [28 May 23 15:12 IST] GET /ws 200 2.8239ms 
+127.0.0.1 - [28 May 23 15:13 IST] POST /login 200 16.4756ms 
+127.0.0.1 - [28 May 23 15:13 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:13 IST] POST /login 200 11.8404ms 
+127.0.0.1 - [28 May 23 15:13 IST] GET /ws 200 2.8092ms 
+127.0.0.1 - [28 May 23 15:13 IST] POST /login 200 16.7255ms 
+127.0.0.1 - [28 May 23 15:13 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:13 IST] POST /login 200 6.7034ms 
+127.0.0.1 - [28 May 23 15:13 IST] GET /ws 200 0s 
+127.0.0.1 - [28 May 23 15:14 IST] POST /login 200 11.5394ms 
+127.0.0.1 - [28 May 23 15:14 IST] GET /ws 200 1.5115ms 
+127.0.0.1 - [28 May 23 15:14 IST] POST /login 200 11.8645ms 
+127.0.0.1 - [28 May 23 15:14 IST] GET /ws 200 1.6215ms 

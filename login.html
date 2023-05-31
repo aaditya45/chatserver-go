@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style type="text/css">
+        html {
+            overflow: hidden;
+        }
+
+        body {
+            overflow: hidden;
+            /* padding: 0;
+            margin: 0; */
+            width: 100%;
+            height: 100%;
+            background: pink;
+        }
+
+        #log {
+            background: white;
+            margin: 0;
+            padding: 0.5em 0.5em 0.5em 0.5em;
+            position: absolute;
+            top: 0.5em;
+            left: 0.5em;
+            right: 0.5em;
+            bottom: 3em;
+            overflow: auto;
+        }
+
+        #form {
+            margin-left: 3px;
+            padding: 2px;
+            margin: 0;
+            position: absolute;
+            bottom: 1em;
+            left: 0px;
+            width: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="loginop">
+        login
+    </button>
+    <button id="registerop">
+        register
+    </button>
+    <div>
+
+        <form id="loginForm" action="">
+            <h2>Login</h2>
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <input type="submit" value="Login">
+            </div>
+        </form>
+    </div>
+
+    <div>
+
+        <form id="registerForm" action="">
+            <h2>Register</h2>
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="usernamer" name="username" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="passwordr" name="password" required>
+            </div>
+            <div>
+                <input type="submit">
+            </div>
+        </form>
+    </div>
+    <span style="color:red;" id="error"></span>
+    <span style="color:green;" id="success"></span> 
+    <div id="chatPage" style="display: none;">
+        <div id="log"></div>
+        <form id="form">
+            <input type="text" onchange="typingFunc()" id="msg" size="64" autofocus />
+            <input type="submit" value="Send" />
+            <button id="closechat">Leave Chat</button>
+        </form>
+        
+    </div>
+
+
+    <script type="text/javascript">
+        var ws
+        var username="user";
+        function chat() {
+            let conn;
+            let msg = document.getElementById("msg");
+            let log = document.getElementById("log");
+
+            function appendLog(item) {
+                let doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
+                log.appendChild(item);
+                if (doScroll) {
+                    log.scrollTop = log.scrollHeight - log.clientHeight;
+                }
+            }
+
+            document.getElementById("form").onsubmit = function () {
+                if (!conn || conn.readyState !== WebSocket.OPEN) {
+                    return false;
+                }
+                if (!msg.value) {
+                    return false;
+                }
+                conn.send(msg.value);
+                msg.value = "";
+                return false;
+            };
+
+            if (window["WebSocket"]) {
+                console.log('websocket condition')
+                const params = window.location.href.split("/");
+                conn = new WebSocket("ws://localhost:8082/ws", 'echo-protocol');
+                conn.addEventListener('open', () => {
+                    console.log('WebSocket connection established.');
+                });
+                conn.onopen = function () {
+                    console.log("connection open")
+                }
+
+                console.log(conn)
+                console.log(document.location.host)
+                conn.onclose = function (evt) {
+                    console.log("closed", evt);
+                    let item = document.createElement("div");
+                    item.innerHTML = "<b>Connection closed.</b>";
+                    appendLog(item);
+                };
+                conn.onmessage = function (evt) {
+                    let messages = evt.data.split('\n');
+                    for (let i = 0; i < messages.length; i++) {
+                        let item = document.createElement("div");
+                        item.innerText = "user : " + messages[i];
+                        appendLog(item);
+                    }
+                };
+                conn.onerror = function (error) {
+                    console.error("WebSocket error:", error);
+                };
+                const closefunc=()=>{
+                    conn.close();
+                }
+                ws=closefunc;
+
+            } else {
+                let item = document.createElement("div");
+                item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
+                appendLog(item);
+            }
+        };
+
+        function typingFunc(){
+
+        }
+
+        function work() {
+            $.ajax({
+                url: "http://localhost:8082/ws",
+                type: "GET",
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+
+        }
+
+
+
+        //login 
+        $(document).ready(function () {
+            $("#registerForm").hide();
+            $('#loginForm').submit(function (event) {
+                event.preventDefault();
+
+                var username = $('#username').val();
+                var password = $('#password').val();
+
+                var loginData = {
+                    username: username,
+                    password: password
+                };
+
+                $.ajax({
+                    url: 'http://localhost:8082/login',
+                    type: 'POST',
+                    data: JSON.stringify(loginData),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        console.log(response);
+                        if (response.success) {
+                            console.log("success");
+                            $('#loginForm').hide();
+                            $('#chatPage').show();
+                            chat()
+                            username=response.username
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        $("#error").text("Invalid credentials");
+
+                    }
+                });
+            });
+        });
+
+        $("#loginop").click(() => {
+            $('#loginForm').show();
+            $('#registerForm').hide();
+        })
+        $("#registerop").click(() => {
+            $('#loginForm').hide();
+            $('#registerForm').show();
+        })
+        $('#registerForm').submit(function (event) {
+            event.preventDefault();
+            console.log("register user function");
+
+            var username = $('#usernamer').val();
+            var password = $('#passwordr').val();
+
+            var loginData = {
+                username: username,
+                password: password
+            };
+
+            $.ajax({
+                url: 'http://localhost:8082/register',  // Replace with your backend endpoint
+                type: 'POST',
+                data: JSON.stringify(loginData),
+                contentType: 'application/json',
+                success: function (response) {
+                    console.log(response);
+                    $("#success").text(response.success)
+                    
+                    // Handle the response from the backend
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    var err = eval("(" + xhr.responseText + ")");
+                    $("#error").text(err.error)
+                    console.log(err);
+                    // Handle the error
+                }
+            });
+        });
+
+        $("#closechat").click(()=>{
+            ws()
+            $("#chatPage").hide();
+            $("#loginForm").show();
+        })
+
+    </script>
+</body>
+
+</html>
